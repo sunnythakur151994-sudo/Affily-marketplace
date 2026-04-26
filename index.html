@@ -2,223 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Affily Market – 3D AI Marketplace</title>
-    <style>
-        /* Reset & Base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background: radial-gradient(circle at 10% 20%, rgba(10, 20, 30, 0.95), rgba(5, 10, 18, 0.98));
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: #f0f0f0;
-        }
-
-        /* Canvas 3D Background */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        /* Glassmorphic Header */
-        .amazon-header {
-            background: rgba(19, 25, 33, 0.7);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: all 0.3s;
-        }
-
-        .nav-bar {
-            background: rgba(35, 47, 62, 0.6);
-            backdrop-filter: blur(8px);
-            padding: 8px 30px;
-            display: flex;
-            gap: 30px;
-            font-size: 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FF9900, #FFD966);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .search-bar input, .search-bar select {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-        }
-
-        .search-btn {
-            background: #FF9900;
-            color: #1e1e2a;
-        }
-
-        /* Cards with glass effect */
-        .product-card, .sidebar, .admin-dashboard, .modal-content {
-            background: rgba(30, 35, 48, 0.75);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 24px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-            color: #f5f5f5;
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.4);
-            border-color: rgba(255,153,0,0.5);
-        }
-
-        .product-price {
-            color: #FFAA55;
-        }
-
-        .buy-btn {
-            background: linear-gradient(95deg, #FF9900, #FFB347);
-            border: none;
-            color: #1a1a2a;
-            font-weight: bold;
-        }
-
-        /* Category sidebar */
-        .category-list li {
-            color: #ddd;
-            transition: 0.2s;
-        }
-        .category-list li:hover {
-            color: #FF9900;
-            text-shadow: 0 0 5px rgba(255,153,0,0.5);
-        }
-
-        /* Customer Care Floating Button */
-        .customer-care-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: 0.2s;
-            border: 2px solid rgba(255,255,255,0.5);
-        }
-        .customer-care-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(40,167,69,0.6);
-        }
-        .customer-care-btn svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
-        }
-        .chat-modal {
-            position: fixed;
-            bottom: 110px;
-            right: 30px;
-            width: 340px;
-            background: rgba(20,25,40,0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.2);
-            z-index: 1001;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-        .chat-header {
-            background: #FF9900;
-            padding: 15px;
-            color: #1e1e2a;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-        .chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .chat-input-area {
-            display: flex;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 8px;
-            border-radius: 20px;
-            color: white;
-        }
-        .chat-input-area button {
-            background: #FF9900;
-            border: none;
-            border-radius: 20px;
-            padding: 8px 15px;
-            margin-left: 8px;
-            cursor: pointer;
-        }
-        .message {
-            padding: 8px 12px;
-            border-radius: 18px;
-            max-width: 80%;
-            font-size: 13px;
-        }
-        .user-msg {
-            background: #FF9900;
-            color: #1e1e2a;
-            align-self: flex-end;
-        }
-        .bot-msg {
-            background: rgba(255,255,255,0.2);
-            align-self: flex-start;
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Responsive */
-        @media (max-width: 768px) {
-            .amazon-header { padding: 8px 15px; flex-wrap: wrap; }
-            .search-bar { margin: 5px 0; width: 100%; }
-            .chat-modal { width: 280px; right: 15px; bottom: 90px; }
-        }
-    </style>
-    <!-- Three.js core -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Affily Market – Premium AI Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script type="importmap">
         {
             "imports": {
@@ -226,365 +12,558 @@
             }
         }
     </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif; }
+        body { background: linear-gradient(135deg, #0a0f1a 0%, #050a12 100%); color: #f0f0f0; overflow-x: hidden; min-height: 100vh; }
+        
+        /* 3D Canvas Background */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+        
+        /* Glass morphism */
+        .glass { background: rgba(20, 25, 40, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); border-radius: 28px; }
+        
+        /* Header */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(10,15,25,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid #FF9900; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 15px; }
+        .logo { font-size: 28px; font-weight: bold; background: linear-gradient(135deg, #FFB347, #FF6600); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .search-area { display: flex; gap: 8px; background: rgba(255,255,255,0.1); border-radius: 60px; padding: 5px 15px; align-items: center; flex-wrap: wrap; }
+        .search-area input, .search-area select { background: transparent; border: none; padding: 8px; color: white; outline: none; }
+        .search-area button { background: #FF9900; border: none; border-radius: 30px; padding: 8px 20px; cursor: pointer; font-weight: bold; }
+        .user-actions button { background: rgba(255,255,255,0.1); border: none; padding: 8px 20px; border-radius: 40px; margin-left: 12px; color: white; cursor: pointer; transition: 0.2s; }
+        .user-actions button:hover { background: #FF9900; color: #111; }
+        
+        /* Product Grid */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; padding: 20px; }
+        .product-card { background: rgba(25,30,45,0.8); backdrop-filter: blur(8px); border-radius: 24px; padding: 16px; transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,165,0,0.3); }
+        .product-card:hover { transform: translateY(-6px); border-color: #FF9900; box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 20px; background: #1e2335; }
+        .price { font-size: 24px; font-weight: bold; color: #FFB347; }
+        .btn-primary { background: linear-gradient(95deg, #FF9900, #FF6600); border: none; padding: 10px 25px; border-radius: 40px; font-weight: bold; cursor: pointer; color: #111; transition: 0.2s; }
+        .btn-primary:hover { transform: scale(1.02); }
+        
+        /* Product Detail Page */
+        .product-detail { max-width: 1200px; margin: 30px auto; padding: 30px; background: rgba(20,25,45,0.75); backdrop-filter: blur(12px); border-radius: 32px; }
+        .detail-grid { display: flex; gap: 40px; flex-wrap: wrap; }
+        .detail-images { flex: 1; min-width: 250px; }
+        .detail-images img { width: 100%; border-radius: 24px; }
+        .detail-info { flex: 1; }
+        .detail-price { font-size: 36px; color: #FFB347; margin: 15px 0; }
+        .payment-methods { display: flex; gap: 15px; flex-wrap: wrap; margin: 20px 0; }
+        .payment-option { background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 60px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
+        .payment-option.selected { background: #FF9900; color: #111; }
+        .quantity-selector { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
+        .quantity-selector button { background: #FF9900; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; }
+        .reviews-section { margin-top: 40px; }
+        .review-card { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 15px; margin: 10px 0; }
+        .similar-products { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        
+        /* Affiliate Dashboard */
+        .affiliate-dashboard { display: flex; min-height: 80vh; margin: 20px; background: rgba(0,0,0,0.3); border-radius: 32px; overflow: hidden; }
+        .dash-sidebar { width: 280px; background: rgba(15,20,35,0.8); backdrop-filter: blur(12px); padding: 25px 15px; border-right: 1px solid rgba(255,255,255,0.1); }
+        .dash-sidebar h3 { margin-bottom: 25px; color: #FF9900; }
+        .dash-sidebar ul { list-style: none; }
+        .dash-sidebar li { padding: 12px 18px; margin: 8px 0; border-radius: 40px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
+        .dash-sidebar li:hover, .dash-sidebar .active-tab { background: #FF9900; color: #111; }
+        .dash-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .stats-cards { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        .stat-card { background: rgba(20,25,45,0.7); backdrop-filter: blur(8px); padding: 20px; border-radius: 24px; flex: 1; text-align: center; }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: rgba(20,25,45,0.95); backdrop-filter: blur(20px); padding: 30px; border-radius: 48px; width: 450px; max-width: 90%; border: 1px solid #FF9900; }
+        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.1); border: none; border-radius: 40px; color: white; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #FF9900; color: #111; padding: 12px 24px; border-radius: 40px; opacity: 0; transition: 0.3s; z-index: 2000; font-weight: bold; }
+        @media (max-width: 800px) { .affiliate-dashboard { flex-direction: column; } .dash-sidebar { width: 100%; } }
+    </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
 
-<!-- Header (same as before but with glass) -->
-<div class="amazon-header">
-    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:15px;">
-        <a href="#" class="logo" onclick="refreshMarketplace();return false">affily<span style="font-size:14px;">.market</span></a>
-        <div class="search-bar" style="display:flex; flex:1; max-width:600px;">
-            <select id="categoryFilter" style="background: rgba(255,255,255,0.15); border-radius: 30px 0 0 30px;"><option value="all">All</option><option>Electronics</option><option>Clothing</option><option>Home</option><option>Beauty</option><option>Sports</option></select>
-            <input type="text" id="searchInput" placeholder="Search products..." style="background: rgba(255,255,255,0.1);">
-            <button class="search-btn" onclick="searchProducts()" style="border-radius:0 30px 30px 0;">🔍</button>
+<div class="main-header">
+    <div class="logo">affily<span style="font-size: 18px;">.market</span></div>
+    <div class="search-area">
+        <select id="globalCategoryFilter"><option value="all">All</option><option>Electronics</option><option>Clothing</option><option>Home</option><option>Beauty</option><option>Sports</option></select>
+        <input type="text" id="globalSearch" placeholder="Search...">
+        <button onclick="globalSearchProducts()"><i class="fas fa-search"></i> Search</button>
+    </div>
+    <div class="user-actions">
+        <button id="loginBtn"><i class="fas fa-user"></i> Login</button>
+        <button id="registerBtn"><i class="fas fa-user-plus"></i> Register</button>
+    </div>
+</div>
+
+<!-- Buyer Store View -->
+<div id="buyerStoreView" style="padding: 20px;">
+    <div id="trendingBanner" style="background: linear-gradient(90deg, #FF9900, #FF6600); padding: 12px; border-radius: 60px; text-align: center; width: fit-content; margin: 0 auto 20px auto; display: none;"></div>
+    <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<!-- Product Detail Page (hidden initially) -->
+<div id="productDetailView" style="display: none;"></div>
+
+<!-- Affiliate Dashboard -->
+<div id="affiliateDashboardView" style="display: none;">
+    <div class="affiliate-dashboard">
+        <div class="dash-sidebar">
+            <h3><i class="fas fa-store"></i> Affiliate Hub</h3>
+            <ul>
+                <li data-tab="dash-home" class="active-tab"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li data-tab="dash-products"><i class="fas fa-boxes"></i> Your Products</li>
+                <li data-tab="dash-trending"><i class="fas fa-chart-line"></i> Trending</li>
+                <li data-tab="dash-generate"><i class="fas fa-robot"></i> Generate with AI</li>
+                <li data-tab="dash-add"><i class="fas fa-plus-circle"></i> Add Product</li>
+                <li data-tab="dash-orders"><i class="fas fa-shopping-cart"></i> Orders</li>
+                <li id="logoutAffiliateBtn"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
         </div>
-        <div class="header-right" id="userArea">
-            <button onclick="openLoginModal('buyer')" style="background:transparent; color:white;">Sign In</button>
-            <button onclick="openLoginModal('affiliate')" style="background:transparent; color:white;">Sell</button>
-        </div>
-    </div>
-</div>
-<div class="nav-bar">
-    <a href="#" onclick="refreshMarketplace()">Today's Deals</a>
-    <a href="#" onclick="filterTrending()">Trending</a>
-    <a href="#" onclick="refreshMarketplace()">New Arrivals</a>
-    <a href="#" onclick="refreshMarketplace()">Best Sellers</a>
-</div>
-
-<div class="container" style="max-width:1400px; margin:20px auto; padding:0 20px;">
-    <!-- Buyer View -->
-    <div id="buyerView">
-        <div style="display:flex; gap:25px; flex-wrap:wrap;">
-            <div class="sidebar" style="width:240px; padding:20px;">
-                <h3>📂 Categories</h3>
-                <ul class="category-list" id="categoryList"></ul>
-                <div style="margin-top:25px;">
-                    <h3>💰 Price</h3>
-                    <label><input type="radio" name="priceFilter" value="all" checked> All</label><br>
-                    <label><input type="radio" name="priceFilter" value="under25"> Under $25</label><br>
-                    <label><input type="radio" name="priceFilter" value="25to50"> $25 - $50</label><br>
-                    <label><input type="radio" name="priceFilter" value="50to100"> $50 - $100</label><br>
-                    <label><input type="radio" name="priceFilter" value="over100"> Over $100</label>
-                </div>
-            </div>
-            <div style="flex:1">
-                <div id="trendingAlert" style="background:rgba(255,243,205,0.2); backdrop-filter:blur(8px); padding:12px; border-radius:40px; margin-bottom:20px; display:none; text-align:center;"></div>
-                <div id="productsGrid" class="products-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:25px;"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Affiliate Dashboard (hidden) -->
-    <div id="affiliateView" style="display:none"><div class="admin-dashboard" style="padding:30px;"><h2>🏪 Affiliate Dashboard</h2><div class="stats-grid" id="affiliateStats"></div><h3>Your Products</h3><div id="affiliateProductsList"></div><h3>Sales & Earnings</h3><div id="affiliateOrdersList"></div><button class="btn btn-primary" onclick="showBuyerView()">← Back to Store</button></div></div>
-
-    <!-- Admin Bot Panel (hidden) -->
-    <div id="adminView" style="display:none"><div class="admin-dashboard"><div class="api-settings" style="background:rgba(0,0,0,0.4);"><h3>🤖 AI Bot – Live APIs</h3><p>Using SerpApi, TrendsMcp, CometAPI, MidAPI, ModelsLab, NVIDIA, Remove.bg</p><button class="btn btn-primary" id="runBotBtn" onclick="runBotDiscovery()">🔍 Run Bot Discovery</button><button class="btn btn-success" id="autoModeBtn" onclick="toggleAutoMode()">🤖 Auto Mode</button><button class="btn btn-danger" onclick="clearAllBotProducts()">🗑️ Clear Bot Products</button></div><div class="stats-grid"><div class="stat-card"><h3>Discovered</h3><h2 id="totalDiscovered">0</h2></div><div class="stat-card"><h3>Published</h3><h2 id="totalPublished">0</h2></div><div class="stat-card"><h3>Fulfilled</h3><h2 id="totalFulfilled">0</h2></div><div class="stat-card"><h3>Revenue</h3><h2 id="platformRevenue">$0</h2></div></div><h3>📈 AI Generated Products</h3><div id="botProductsList"></div></div></div>
-</div>
-
-<!-- Footer with hidden admin -->
-<div class="footer" style="background:rgba(35,47,62,0.8); backdrop-filter:blur(8px); margin-top:60px;">
-    <div class="footer-content" style="max-width:1400px; margin:0 auto; padding:30px 20px; display:flex; flex-wrap:wrap; justify-content:space-between;">
-        <div><h4>Get to Know Us</h4><a href="#">About</a><a href="#">Careers</a></div>
-        <div><h4>Make Money</h4><a href="#" onclick="openLoginModal('affiliate')">Sell</a></div>
-        <div><h4>Customer Service</h4><a href="#" id="developerChoiceLink">🔧 Developer's Choice</a><div id="devChoicePanel" style="display:none;"><a href="#" id="adminLoginLink">🔐 Admin Login</a></div></div>
-        <div><h4>Legal</h4><a href="#" id="privacyLink">Privacy</a><a href="#" id="disclaimerLink">Disclaimer</a></div>
-    </div>
-    <div style="text-align:center; padding-bottom:20px;">© 2025 affily.market – 3D Immersive Shopping</div>
-</div>
-
-<!-- Customer Care Floating Button & Chat Modal -->
-<div class="customer-care-btn" id="customerCareBtn">
-    <svg viewBox="0 0 24 24" width="30" height="30"><path fill="white" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 13c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z"/></svg>
-</div>
-<div class="chat-modal" id="chatModal">
-    <div class="chat-header">
-        <span>💬 affily Care</span>
-        <button id="closeChatBtn" style="background:transparent; border:none; color:white; font-size:18px; cursor:pointer;">✕</button>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-        <div class="message bot-msg">👋 Hi! How can we help you today? You can ask about orders, products, or affiliate program.</div>
-    </div>
-    <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="Type your message...">
-        <button id="sendChatBtn">Send</button>
+        <div class="dash-content" id="affiliateContent"></div>
     </div>
 </div>
 
-<!-- Modals (login, admin, checkout, legal) - same as before -->
-<div id="loginModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center;"><div class="modal-content"><h3>Login</h3><input type="email" id="loginEmail" placeholder="Email"><select id="loginRoleSelect"><option value="buyer">Buyer</option><option value="affiliate">Affiliate</option></select><button class="btn btn-primary" onclick="doLogin()">Continue</button><button class="btn" onclick="closeLoginModal()">Cancel</button></div></div>
-<div id="adminLoginModal" class="modal"><div class="modal-content"><h3>Admin Access</h3><input type="password" id="adminPassword" placeholder="Password"><button class="btn btn-primary" onclick="verifyAdmin()">Login</button><button class="btn" onclick="closeAdminLoginModal()">Cancel</button></div></div>
-<div id="checkoutModal" class="modal"><div class="modal-content"><h3>Checkout</h3><div id="checkoutInfo"></div><label><input type="checkbox" id="fastPayoutCheck"> ⚡ Fast payout (1% fee)</label><button class="btn btn-primary" onclick="confirmPurchase()">Confirm</button><button class="btn" onclick="closeCheckoutModal()">Cancel</button></div></div>
-<div id="privacyModal" class="modal"><div class="modal-content"><h3>Privacy</h3><p>We value your privacy. Data is safe.</p><button class="btn" onclick="closeModal('privacyModal')">Close</button></div></div>
-<div id="disclaimerModal" class="modal"><div class="modal-content"><h3>Disclaimer</h3><p>Marketplace connects buyers/sellers.</p><button class="btn" onclick="closeModal('disclaimerModal')">Close</button></div></div>
-<div id="toast" style="position:fixed; bottom:20px; right:20px; background:#FF9900; color:#1e1e2a; padding:12px 24px; border-radius:40px; opacity:0; transition:0.3s; z-index:3000;"></div>
+<!-- Admin Panel -->
+<div id="adminPanelView" style="display: none; padding: 30px;">
+    <div class="glass" style="padding: 30px;">
+        <h2>🤖 AI Bot Control</h2>
+        <button id="adminRunBotBtn" class="btn-primary">🚀 Run Bot Now</button>
+        <button id="adminToggleAutoBtn" class="btn-primary">🤖 Enable Auto Mode (Daily)</button>
+        <button id="adminClearBotBtn" class="btn-primary" style="background:#dc2626;">🗑️ Clear Bot Products</button>
+        <div id="adminStats" style="margin-top: 20px;"></div>
+        <h3>AI Products</h3>
+        <div id="adminBotList"></div>
+        <button id="adminLogoutBtn" class="btn-primary">Logout</button>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="loginModal" class="modal"><div class="modal-content"><h2>Login</h2><input type="text" id="loginId" placeholder="Email"><input type="password" id="loginPass" placeholder="Password"><select id="loginRole"><option value="buyer">Buyer</option><option value="affiliate">Affiliate</option><option value="admin">Admin</option></select><button id="doLoginBtn" class="btn-primary">Login</button><p style="margin-top:10px;">Admin: admin14 / first-ecommerce</p><button id="closeLoginModal" style="background:#333;">Cancel</button></div></div>
+<div id="registerModal" class="modal"><div class="modal-content"><h2>Register Affiliate</h2><input type="text" id="regName" placeholder="Full Name"><input type="email" id="regEmail" placeholder="Email"><input type="password" id="regPass" placeholder="Password"><button id="doRegisterBtn" class="btn-primary">Sign Up</button><button id="closeRegModal" style="background:#333;">Cancel</button></div></div>
+<div id="toast" class="toast"></div>
 
 <script type="module">
-    // ------------------- 3D Background with Category-based Animation -------------------
-    import * as THREE from 'three';
-
+    import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+    
+    // ==================== 3D BACKGROUND (Enhanced) ====================
     const canvas = document.getElementById('bg-canvas');
     const scene = new THREE.Scene();
-    scene.background = null; // transparent
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 30;
+    scene.background = null;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 35;
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    // Particle system
-    let particleGeometry, particleMaterial, particles;
-    let currentCategory = 'all';
-    const colors = {
-        all: [0xffaa66, 0x88aaff, 0x66ffaa],
-        Electronics: [0x00aaff, 0x0066cc, 0x33ccff],
-        Clothing: [0xff66cc, 0xff99cc, 0xff44aa],
-        Home: [0x66ff66, 0x33cc33, 0x99ff99],
-        Beauty: [0xff66aa, 0xff88cc, 0xffaadd],
-        Sports: [0xffaa44, 0xff8844, 0xff6600]
-    };
+    
+    // Particle system with color cycling
+    let particleSystem;
+    const colors = [0xff3366, 0xff6633, 0xff9933, 0xffcc33, 0xff33cc];
+    let hue = 0;
     
     function initParticles() {
-        const count = 1500;
-        particleGeometry = new THREE.BufferGeometry();
+        const count = 2500;
+        const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
-            positions[i*3] = (Math.random() - 0.5) * 100;
-            positions[i*3+1] = (Math.random() - 0.5) * 60;
-            positions[i*3+2] = (Math.random() - 0.5) * 80 - 30;
+            positions[i*3] = (Math.random() - 0.5) * 150;
+            positions[i*3+1] = (Math.random() - 0.5) * 80;
+            positions[i*3+2] = (Math.random() - 0.5) * 100 - 50;
         }
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        setParticleColor(currentCategory);
-        particles = new THREE.Points(particleGeometry, particleMaterial);
-        scene.add(particles);
-    }
-    
-    function setParticleColor(cat) {
-        const colSet = colors[cat] || colors.all;
-        const count = particleGeometry.attributes.position.count;
-        const colorsArray = new Float32Array(count * 3);
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const colorArray = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
-            const col = colSet[Math.floor(Math.random() * colSet.length)];
-            const r = ((col >> 16) & 255)/255;
-            const g = ((col >> 8) & 255)/255;
-            const b = (col & 255)/255;
-            colorsArray[i*3] = r;
-            colorsArray[i*3+1] = g;
-            colorsArray[i*3+2] = b;
+            const col = colors[Math.floor(Math.random() * colors.length)];
+            colorArray[i*3] = ((col >> 16) & 255)/255;
+            colorArray[i*3+1] = ((col >> 8) & 255)/255;
+            colorArray[i*3+2] = (col & 255)/255;
         }
-        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
-        if (particleMaterial) particleMaterial.dispose();
-        particleMaterial = new THREE.PointsMaterial({ size: 0.25, vertexColors: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
-        if (particles) particles.material = particleMaterial;
+        geometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+        const material = new THREE.PointsMaterial({ size: 0.25, vertexColors: true, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+        particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
     }
-    
-    function changeCategoryAnimation(category) {
-        currentCategory = category;
-        setParticleColor(category);
-        // also gently rotate or morph - simple pulse effect
-        gsapTimeline?.kill();
-        // we'll use simple rotation or scale on particles - optional
-    }
-    
     initParticles();
     
-    // Animation loop
     let time = 0;
     function animate() {
         requestAnimationFrame(animate);
-        time += 0.005;
-        if (particles) {
-            particles.rotation.y = time * 0.1;
-            particles.rotation.x = Math.sin(time * 0.2) * 0.1;
+        time += 0.008;
+        if (particleSystem) {
+            particleSystem.rotation.y = time * 0.15;
+            particleSystem.rotation.x = Math.sin(time * 0.3) * 0.15;
+            // Pulse colors
+            hue = (hue + 0.003) % 1;
+            const newColor = new THREE.Color().setHSL(hue, 0.8, 0.6);
+            if (particleSystem.material) particleSystem.material.color = newColor;
         }
-        camera.position.z = 30 + Math.sin(time * 0.2) * 1;
+        camera.position.z = 35 + Math.sin(time * 0.2) * 2;
         camera.lookAt(0, 0, 0);
         renderer.render(scene, camera);
     }
     animate();
-    
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
     
-    // Expose function to outside (for category selection from HTML)
-    window.update3DCategory = changeCategoryAnimation;
-</script>
-
-<script>
-    // ------------------- ALL EXISTING MARKETPLACE LOGIC (with your API keys) -------------------
-    // API keys (as you provided)
+    // ==================== API KEYS (from user) ====================
     const API_KEYS = {
         comet: "sk-VU8ROBbCIVRNVFW9h6m4RyLcl5HAqF6stCegEVpVlxmMMxAg",
-        midapi: "7bc74e55e32b63560b48d6ca95e70292",
         modelslab: "fCP63IJb02QJnbvOjKj2E3EMvis5bHTLPZgttpn8KycSerdbAi3R5t9Fx06c",
         serpapi: "397ff0b93877d12fe77f0ec8e94b9bd17b9efbd013f09518d1a992eab126d572",
-        ecomsource_access: "f886a53fc8f2681b7154e3ac4b40ade2",
-        ecomsource_secret: "e959ece5c00d7f6026505be1e35cf47cf7532d6001e75d1ad077a262caa63290",
-        nvidia: "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",
-        removebg: "jWoTyVwik4DDWRCQuWhSED41",
         trendsmcp: "tmcp_live_0nknmr5xj3uky6o5sac0p2tmsktpu5z5"
     };
     
-    // Data & UI (copied from previous working version, with minor adjustments)
+    // ==================== DATA STORES ====================
     let products = JSON.parse(localStorage.getItem('affily_products')) || [];
     let orders = JSON.parse(localStorage.getItem('affily_orders')) || [];
-    let users = JSON.parse(localStorage.getItem('affily_users')) || {};
+    let users = JSON.parse(localStorage.getItem('affily_users')) || [];
     let currentUser = null;
-    let currentCheckoutProduct = null;
-    let botAutoMode = localStorage.getItem('bot_auto_mode') === 'true';
-    let botInterval = null;
-    let botStats = JSON.parse(localStorage.getItem('bot_stats')) || { totalDiscovered:0, totalPublished:0, totalFulfilled:0, platformRevenue:0, lastRun:null };
+    let botStats = JSON.parse(localStorage.getItem('bot_stats')) || { totalDiscovered:0, totalPublished:0, platformRevenue:0 };
+    let autoModeEnabled = localStorage.getItem('auto_mode') === 'true';
+    let autoInterval = null;
     
-    function saveData() { localStorage.setItem('affily_products', JSON.stringify(products)); localStorage.setItem('affily_orders', JSON.stringify(orders)); localStorage.setItem('affily_users', JSON.stringify(users)); localStorage.setItem('bot_stats', JSON.stringify(botStats)); }
-    function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',3000); }
-    
-    // ---------- API functions (same as before) ----------
-    async function fetchTrendingProducts() {
-        if (API_KEYS.serpapi) { try { const res=await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=trending+products&api_key=${API_KEYS.serpapi}`); const data=await res.json(); if(data.shopping_results) return data.shopping_results.slice(0,10).map(item=>({ title:item.title, category:"Electronics", basePrice:parseFloat(item.price?.replace(/[^0-9.]/g,''))||15, viralScore:80+Math.random()*15, platform:"SerpApi" })); } catch(e){} }
-        if (API_KEYS.trendsmcp) { try { const res=await fetch(`https://api.trendsmcp.ai/v1/trending?apikey=${API_KEYS.trendsmcp}`); const data=await res.json(); if(data.trends) return data.trends.map(t=>({ title:t.name, category:t.category, basePrice:t.base_price, viralScore:t.score, platform:"TrendsMcp" })); } catch(e){} }
-        if (API_KEYS.ecomsource_access && API_KEYS.ecomsource_secret) { try { const res=await fetch(`https://api.ecomsource.ai/products?limit=10&access_code=${API_KEYS.ecomsource_access}&secret_key=${API_KEYS.ecomsource_secret}`); const data=await res.json(); if(data.products) return data.products.map(p=>({ title:p.name, category:p.category, basePrice:p.price, viralScore:p.trend_score||85, platform:"EcomSource" })); } catch(e){} }
-        return [{ title:"Cordless Hair Straightener", category:"Beauty", basePrice:12.99, viralScore:98, platform:"mock" },{ title:"Portable Blender", category:"Home", basePrice:15.50, viralScore:95, platform:"mock" }];
+    function saveData() {
+        localStorage.setItem('affily_products', JSON.stringify(products));
+        localStorage.setItem('affily_orders', JSON.stringify(orders));
+        localStorage.setItem('affily_users', JSON.stringify(users));
+        localStorage.setItem('bot_stats', JSON.stringify(botStats));
     }
+    function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 3000); }
+    function escapeHtml(str) { return String(str||'').replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    
+    // ==================== IMAGE GENERATION (GUARANTEED) ====================
     async function generateProductImage(productName) {
-        if (API_KEYS.comet) { try { const res=await fetch('https://api.cometapi.com/v1/midjourney/imagine',{method:'POST',headers:{'Authorization':`Bearer ${API_KEYS.comet}`,'Content-Type':'application/json'},body:JSON.stringify({prompt:productName,width:512,height:512})}); const data=await res.json(); if(data.images?.[0]?.url) return data.images[0].url; } catch(e){} }
-        if (API_KEYS.midapi) { try { const res=await fetch('https://api.midapi.ai/v1/generate',{method:'POST',headers:{'x-api-key':API_KEYS.midapi,'Content-Type':'application/json'},body:JSON.stringify({prompt:productName})}); const data=await res.json(); if(data.image_url) return data.image_url; } catch(e){} }
-        if (API_KEYS.modelslab) { try { const res=await fetch('https://modelslab.com/api/v6/images/text2img',{method:'POST',headers:{'api_key':API_KEYS.modelslab,'Content-Type':'application/json'},body:JSON.stringify({prompt:productName,width:512,height:512})}); const data=await res.json(); if(data.output?.[0]) return data.output[0]; } catch(e){} }
-        return `https://placehold.co/400x400?text=${encodeURIComponent(productName)}`;
+        // Try CometAPI
+        if (API_KEYS.comet) {
+            try {
+                const res = await fetch('https://api.cometapi.com/v1/midjourney/imagine', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${API_KEYS.comet}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: productName, width: 512, height: 512 })
+                });
+                const data = await res.json();
+                if (data.images?.[0]?.url) return data.images[0].url;
+            } catch(e) { console.warn("CometAPI error", e); }
+        }
+        // Fallback: always return a styled placeholder with product name
+        return `https://placehold.co/400x400?text=${encodeURIComponent(productName.substring(0,25))}&font=roboto&bg=FF9900&text=FFFFFF`;
     }
-    async function generateProductDetails(productName,category) {
-        if (API_KEYS.nvidia) { try { const res=await fetch('https://api.nvcf.nvidia.com/v2/nvcf/pexec/functions/YOUR_FUNCTION_ID',{method:'POST',headers:{'Authorization':`Bearer ${API_KEYS.nvidia}`,'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:"user",content:`Short description & keywords for ${productName} in ${category}.`}]})}); const data=await res.json(); const text=data.choices?.[0]?.message?.content||""; const keywords=text.match(/keywords:?(.*)/i)?.[1]||`${productName}, trending`; return {description:text.substring(0,300),keywords}; } catch(e){} }
-        return { description:`🔥 Trending ${productName} – order now!`, keywords:`${productName}, ${category}` };
+    
+    // ==================== TRENDING DISCOVERY ====================
+    async function fetchTrendingProducts() {
+        if (API_KEYS.serpapi) {
+            try {
+                const res = await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=trending+products&api_key=${API_KEYS.serpapi}`);
+                const data = await res.json();
+                if (data.shopping_results) return data.shopping_results.slice(0,8).map(item => ({ title: item.title, category: "Electronics", basePrice: parseFloat(item.price?.replace(/[^0-9.]/g,''))||15, platform: "SerpApi" }));
+            } catch(e) {}
+        }
+        return [{ title: "Wireless Earbuds Pro", category: "Electronics", basePrice: 19.99, platform: "mock" }];
     }
-    async function autoPlaceOrderWithSupplier(product,customerDetails) { await new Promise(r=>setTimeout(r,1000)); return { success:true, trackingNumber:'TRK'+Math.random().toString(36).substr(2,8).toUpperCase(), supplierOrderId:'SUP_'+Date.now() }; }
     
     async function runBotDiscovery() {
-        const btn=document.getElementById('runBotBtn'); if(btn) btn.disabled=true;
-        showToast("🤖 Scanning trending...");
-        const trending=await fetchTrendingProducts();
-        let published=0;
-        for(let item of trending.slice(0,8)) {
-            if(products.some(p=>p.title.toLowerCase()===item.title.toLowerCase())) continue;
-            const details=await generateProductDetails(item.title,item.category);
-            const img=await generateProductImage(item.title);
-            const margin=0.1+Math.random()*0.15;
-            const sellingPrice=Math.round(item.basePrice*(1+margin)*100)/100;
-            products.unshift({ id:'ai_'+Date.now()+'_'+Math.random().toString(36).substr(2,6), affiliateId:'ai_bot', title:item.title, description:details.description, keywords:details.keywords, category:item.category, condition:'new', basePrice:Math.round(item.basePrice*100), sellingPrice:Math.round(sellingPrice*100), imageUrl:img, rating:4.5+Math.random()*0.5, status:'active', source:item.platform, botAdded:true, addedAt:new Date().toISOString(), marginPercent:Math.round(margin*100) });
-            botStats.totalDiscovered++; botStats.totalPublished++; published++;
+        showToast("🤖 Scanning trending products...");
+        const trending = await fetchTrendingProducts();
+        let published = 0;
+        for (let item of trending.slice(0,6)) {
+            if (products.some(p => p.title.toLowerCase() === item.title.toLowerCase())) continue;
+            const img = await generateProductImage(item.title);
+            const margin = 0.1 + Math.random() * 0.15;
+            const sellingPrice = Math.round(item.basePrice * (1 + margin) * 100) / 100;
+            const newProduct = {
+                id: 'ai_'+Date.now()+'_'+Math.random().toString(36).substr(2,6),
+                affiliateId: 'ai_bot',
+                title: item.title,
+                description: `🔥 Trending product: ${item.title}. High quality, fast shipping.`,
+                category: item.category,
+                condition: 'new',
+                basePrice: Math.round(item.basePrice * 100),
+                sellingPrice: Math.round(sellingPrice * 100),
+                imageUrl: img,
+                rating: 4.5,
+                status: 'active',
+                botAdded: true
+            };
+            products.unshift(newProduct);
+            published++;
+            botStats.totalDiscovered++; botStats.totalPublished++;
         }
-        botStats.lastRun=new Date().toISOString(); saveData();
-        showToast(`✅ Published ${published} products`);
-        if(btn) btn.disabled=false;
-        refreshMarketplace(); if(currentUser?.role==='admin') showAdminDashboard();
+        saveData();
+        showToast(`✅ Published ${published} new AI products!`);
+        if (currentUser?.role === 'admin') renderAdminPanel();
+        renderBuyerStore();
     }
     
-    // UI Functions (render, filter, auth, etc.)
-    function renderProductCard(p) { return `<div class="product-card" onclick="openCheckout('${p.id}')"><img src="${p.imageUrl}" class="product-image" onerror="this.src='https://placehold.co/400x400'" style="width:100%;height:200px;object-fit:cover;border-radius:16px;">${p.botAdded?'<div class="trending-badge" style="background:#FF8800;display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;">🔥 AI-Picked</div>':''}<div style="font-weight:bold;margin:8px 0;">${escapeHtml(p.title)}</div><div class="product-price">$${(p.sellingPrice/100).toFixed(2)}</div><div>⭐ ${(p.rating||4).toFixed(1)}</div><button class="buy-btn">Buy Now</button></div>`; }
-    function filterProducts() {
-        let filtered=products.filter(p=>p.status==='active');
-        const cat=document.getElementById('categoryFilter').value;
-        if(cat!=='all') filtered=filtered.filter(p=>p.category===cat);
-        const search=document.getElementById('searchInput').value.toLowerCase();
-        if(search) filtered=filtered.filter(p=>p.title.toLowerCase().includes(search));
-        const price=document.querySelector('input[name="priceFilter"]:checked')?.value;
-        if(price==='under25') filtered=filtered.filter(p=>p.sellingPrice/100<25);
-        else if(price==='25to50') filtered=filtered.filter(p=>p.sellingPrice/100>=25&&p.sellingPrice/100<=50);
-        else if(price==='50to100') filtered=filtered.filter(p=>p.sellingPrice/100>50&&p.sellingPrice/100<=100);
-        else if(price==='over100') filtered=filtered.filter(p=>p.sellingPrice/100>100);
-        document.getElementById('productsGrid').innerHTML=filtered.length?filtered.map(renderProductCard).join(''):'<p>No products found.</p>';
-        const alertDiv=document.getElementById('trendingAlert');
-        if(filtered.some(p=>p.botAdded)) { alertDiv.innerHTML='🔥 Trending AI products available!'; alertDiv.style.display='block'; } else alertDiv.style.display='none';
-        // Update 3D background category
-        const activeCat = document.getElementById('categoryFilter').value;
-        if(window.update3DCategory) window.update3DCategory(activeCat);
+    // Auto mode
+    function startAutoMode() {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(runBotDiscovery, 24 * 60 * 60 * 1000); // daily
+        autoModeEnabled = true;
+        localStorage.setItem('auto_mode', 'true');
+        showToast("Auto mode enabled – will run daily");
     }
-    function refreshMarketplace() { filterProducts(); renderCategories(); }
-    function renderCategories() { const cats=['all','Electronics','Clothing','Home','Beauty','Sports']; document.getElementById('categoryList').innerHTML=cats.map(c=>`<li onclick="document.getElementById('categoryFilter').value='${c}'; filterProducts();">${c==='all'?'All':c}</li>`).join(''); }
-    function searchProducts() { filterProducts(); }
-    function filterTrending() { document.getElementById('categoryFilter').value='all'; document.getElementById('searchInput').value=''; filterProducts(); }
-    function openCheckout(id) { const p=products.find(p=>p.id===id); if(p){ currentCheckoutProduct=p; document.getElementById('checkoutInfo').innerHTML=`<strong>${p.title}</strong><br>$${(p.sellingPrice/100).toFixed(2)}`; document.getElementById('checkoutModal').style.display='flex'; } }
-    async function confirmPurchase() { /* same as previous auto-fulfill order */ 
-        if(!currentCheckoutProduct) return;
-        const fastPayout=document.getElementById('fastPayoutCheck').checked;
-        let fee=fastPayout?Math.round(currentCheckoutProduct.sellingPrice*0.01):0;
-        const profit=currentCheckoutProduct.sellingPrice-currentCheckoutProduct.basePrice;
-        const newOrder={ id:'ord_'+Date.now(), productId:currentCheckoutProduct.id, affiliateId:currentCheckoutProduct.affiliateId, soldPrice:currentCheckoutProduct.sellingPrice, profitCents:profit, fastFeeCents:fee, status:'pending_fulfillment', customerEmail:currentUser?.email||'guest@example.com', date:new Date().toISOString() };
-        orders.push(newOrder); botStats.platformRevenue+=fee; saveData();
-        showToast(`✅ Order placed. Platform earned $${(fee/100).toFixed(2)}`);
-        if(currentCheckoutProduct.botAdded) {
-            const sup=await autoPlaceOrderWithSupplier(currentCheckoutProduct,{email:newOrder.customerEmail});
-            if(sup.success) { newOrder.status='fulfilled'; newOrder.trackingNumber=sup.trackingNumber; botStats.totalFulfilled++; saveData(); showToast(`✅ Auto-fulfilled! Tracking: ${sup.trackingNumber}`); }
+    function stopAutoMode() {
+        if (autoInterval) clearInterval(autoInterval);
+        autoModeEnabled = false;
+        localStorage.setItem('auto_mode', 'false');
+        showToast("Auto mode disabled");
+    }
+    function toggleAutoMode() { autoModeEnabled ? stopAutoMode() : startAutoMode(); }
+    
+    // ==================== PRODUCT DETAIL PAGE ====================
+    function showProductDetail(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        const similar = products.filter(p => p.category === product.category && p.id !== productId).slice(0,4);
+        // Mock reviews
+        const reviews = [
+            { user: "John D.", rating: 5, comment: "Amazing product, fast delivery!" },
+            { user: "Sarah K.", rating: 4, comment: "Good quality, worth the price." },
+            { user: "Mike L.", rating: 5, comment: "Exceeded my expectations." }
+        ];
+        let quantity = 1;
+        let selectedPayment = "Credit Card";
+        
+        const detailHtml = `
+            <div class="product-detail">
+                <button id="backToShopBtn" class="btn-primary" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Back to Shop</button>
+                <div class="detail-grid">
+                    <div class="detail-images">
+                        <img src="${product.imageUrl}" alt="${escapeHtml(product.title)}" onerror="this.src='https://placehold.co/400x400?text=No+Image'">
+                    </div>
+                    <div class="detail-info">
+                        <h1>${escapeHtml(product.title)}</h1>
+                        <p>${escapeHtml(product.description || "No description available.")}</p>
+                        <div class="detail-price">$${(product.sellingPrice/100).toFixed(2)}</div>
+                        <div class="quantity-selector">
+                            <span>Quantity:</span>
+                            <button id="qtyMinus">-</button>
+                            <span id="qtyValue">1</span>
+                            <button id="qtyPlus">+</button>
+                        </div>
+                        <div class="payment-methods">
+                            <div data-method="Credit Card" class="payment-option selected"><i class="fab fa-cc-visa"></i> Credit Card</div>
+                            <div data-method="PayPal" class="payment-option"><i class="fab fa-paypal"></i> PayPal</div>
+                            <div data-method="Crypto" class="payment-option"><i class="fab fa-bitcoin"></i> Crypto</div>
+                            <div data-method="Cash on Delivery" class="payment-option"><i class="fas fa-truck"></i> Cash on Delivery</div>
+                            <div data-method="Bank Transfer" class="payment-option"><i class="fas fa-university"></i> Bank Transfer</div>
+                        </div>
+                        <button id="buyNowDetailBtn" class="btn-primary" style="width:100%; margin-top:20px;">Buy Now</button>
+                    </div>
+                </div>
+                <div class="reviews-section">
+                    <h3>Customer Reviews</h3>
+                    ${reviews.map(r => `<div class="review-card"><strong>${r.user}</strong> ${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}<p>${r.comment}</p></div>`).join('')}
+                </div>
+                <div class="similar-products">
+                    <h3>Similar Products</h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:15px;">
+                        ${similar.map(p => `
+                            <div class="product-card" style="cursor:pointer;" onclick="showProductDetail('${p.id}')">
+                                <img src="${p.imageUrl}" style="width:100%; height:120px; object-fit:cover; border-radius:16px;">
+                                <h4>${escapeHtml(p.title)}</h4>
+                                <div>$${(p.sellingPrice/100).toFixed(2)}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('buyerStoreView').style.display = 'none';
+        document.getElementById('productDetailView').style.display = 'block';
+        document.getElementById('productDetailView').innerHTML = detailHtml;
+        
+        // Event handlers for detail page
+        document.getElementById('backToShopBtn').onclick = () => {
+            document.getElementById('productDetailView').style.display = 'none';
+            document.getElementById('buyerStoreView').style.display = 'block';
+            renderBuyerStore();
+        };
+        document.querySelectorAll('.payment-option').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedPayment = opt.dataset.method;
+            };
+        });
+        document.getElementById('qtyMinus').onclick = () => { if (quantity > 1) { quantity--; document.getElementById('qtyValue').innerText = quantity; } };
+        document.getElementById('qtyPlus').onclick = () => { quantity++; document.getElementById('qtyValue').innerText = quantity; };
+        document.getElementById('buyNowDetailBtn').onclick = () => {
+            const total = (product.sellingPrice/100) * quantity;
+            showToast(`Order placed! Payment: ${selectedPayment}, Total: $${total.toFixed(2)}. Thank you!`);
+            // Save order
+            const newOrder = { id:'ord_'+Date.now(), productId: product.id, affiliateId: product.affiliateId, soldPrice: product.sellingPrice, quantity, payment: selectedPayment, status: 'completed', customerEmail: currentUser?.email || 'guest', date: new Date() };
+            orders.push(newOrder);
+            botStats.platformRevenue += 0; // optional fee
+            saveData();
+            document.getElementById('productDetailView').style.display = 'none';
+            document.getElementById('buyerStoreView').style.display = 'block';
+            renderBuyerStore();
+        };
+    }
+    window.showProductDetail = showProductDetail;
+    
+    // ==================== BUYER STORE ====================
+    function renderBuyerStore() {
+        const container = document.getElementById('productsGrid');
+        let filtered = products.filter(p => p.status === 'active');
+        const cat = document.getElementById('globalCategoryFilter').value;
+        if (cat !== 'all') filtered = filtered.filter(p => p.category === cat);
+        const search = document.getElementById('globalSearch').value.toLowerCase();
+        if (search) filtered = filtered.filter(p => p.title.toLowerCase().includes(search));
+        container.innerHTML = filtered.map(p => `
+            <div class="product-card" onclick="showProductDetail('${p.id}')">
+                <img src="${p.imageUrl}" class="product-img" onerror="this.src='https://placehold.co/400x400?text=No+Image'">
+                <h4>${escapeHtml(p.title)}</h4>
+                <div class="price">$${(p.sellingPrice/100).toFixed(2)}</div>
+                <button class="btn-primary" style="margin-top:10px;">View Details</button>
+            </div>
+        `).join('');
+        const banner = document.getElementById('trendingBanner');
+        if (products.some(p=>p.botAdded)) { banner.innerHTML = '🔥 AI-trending products available!'; banner.style.display = 'block'; }
+        else banner.style.display = 'none';
+    }
+    window.globalSearchProducts = () => renderBuyerStore();
+    document.getElementById('globalCategoryFilter').addEventListener('change', () => renderBuyerStore());
+    
+    // ==================== AFFILIATE DASHBOARD ====================
+    function showAffiliateTab(tabId) {
+        const contentDiv = document.getElementById('affiliateContent');
+        if (tabId === 'dash-home') {
+            const myProducts = products.filter(p => p.affiliateId === currentUser.id);
+            const myOrders = orders.filter(o => o.affiliateId === currentUser.id);
+            const earnings = myOrders.reduce((s,o)=>s+o.soldPrice,0);
+            contentDiv.innerHTML = `<div class="stats-cards"><div class="stat-card"><h3>💰 Earnings</h3><h2>$${(earnings/100).toFixed(2)}</h2></div><div class="stat-card"><h3>📦 Sales</h3><h2>${myOrders.length}</h2></div><div class="stat-card"><h3>🛍️ Products</h3><h2>${myProducts.length}</h2></div></div><p>Welcome, ${currentUser.name}!</p>`;
         }
-        closeCheckoutModal(); if(currentUser?.role==='affiliate') showAffiliateDashboard(); if(currentUser?.role==='admin') showAdminDashboard(); refreshMarketplace();
+        else if (tabId === 'dash-products') {
+            const myProducts = products.filter(p => p.affiliateId === currentUser.id);
+            contentDiv.innerHTML = `<h2>Your Products</h2><div class="products-grid">${myProducts.map(p => `<div class="product-card"><img src="${p.imageUrl}" class="product-img"><h4>${escapeHtml(p.title)}</h4><div>$${(p.sellingPrice/100).toFixed(2)}</div><button onclick="deleteProduct('${p.id}')" class="btn-primary" style="background:#dc2626;">Delete</button></div>`).join('')}</div>`;
+        }
+        else if (tabId === 'dash-trending') {
+            const trending = products.filter(p => p.botAdded);
+            contentDiv.innerHTML = `<h2>🔥 Trending Products</h2><div class="products-grid">${trending.map(p => `<div class="product-card"><img src="${p.imageUrl}" class="product-img"><h4>${escapeHtml(p.title)}</h4><div>$${(p.sellingPrice/100).toFixed(2)}</div></div>`).join('')}</div>`;
+        }
+        else if (tabId === 'dash-generate') {
+            contentDiv.innerHTML = `<h2>Generate with AI</h2><input type="text" id="aiProductIdea" placeholder="Product idea (e.g., 'Smart water bottle')" style="width:100%;padding:12px;"><button id="generateAiBtn" class="btn-primary">Generate</button><div id="aiResult"></div>`;
+            document.getElementById('generateAiBtn').onclick = async () => {
+                const idea = document.getElementById('aiProductIdea').value;
+                if (!idea) return;
+                showToast("AI generating...");
+                const img = await generateProductImage(idea);
+                const newProd = { id: 'aff_'+Date.now(), affiliateId: currentUser.id, title: idea, description: "AI generated product", category: "General", basePrice: 1000, sellingPrice: 2500, imageUrl: img, status: 'active' };
+                products.push(newProd);
+                saveData();
+                showToast("Product added!");
+                showAffiliateTab('dash-products');
+            };
+        }
+        else if (tabId === 'dash-add') {
+            contentDiv.innerHTML = `<h2>Add Product</h2><div class="product-form"><input type="text" id="prodTitle" placeholder="Title"><textarea id="prodDesc" placeholder="Description"></textarea><input type="text" id="prodCategory" placeholder="Category"><input type="number" id="prodPrice" placeholder="Selling Price (USD)"><input type="text" id="prodImage" placeholder="Image URL (optional)"><button id="addProductBtn" class="btn-primary">Add</button></div>`;
+            document.getElementById('addProductBtn').onclick = async () => {
+                const title = document.getElementById('prodTitle').value;
+                if (!title) return;
+                let img = document.getElementById('prodImage').value;
+                if (!img) img = await generateProductImage(title);
+                const newProd = { id: 'aff_'+Date.now(), affiliateId: currentUser.id, title, description: document.getElementById('prodDesc').value, category: document.getElementById('prodCategory').value, basePrice: 0, sellingPrice: Math.round(parseFloat(document.getElementById('prodPrice').value)*100), imageUrl: img, status: 'active' };
+                products.push(newProd);
+                saveData();
+                showToast("Product added");
+                showAffiliateTab('dash-products');
+            };
+        }
+        else if (tabId === 'dash-orders') {
+            const myOrders = orders.filter(o => o.affiliateId === currentUser.id);
+            contentDiv.innerHTML = `<h2>Orders</h2>${myOrders.map(o => `<div>Order ${o.id} - $${(o.soldPrice/100).toFixed(2)} - ${o.payment || 'Card'}</div>`).join('')}`;
+        }
     }
-    function showAdminDashboard() { if(!currentUser||currentUser.role!=='admin'){showToast('Admin only');return;} document.getElementById('buyerView').style.display='none'; document.getElementById('affiliateView').style.display='none'; document.getElementById('adminView').style.display='block'; document.getElementById('totalDiscovered').innerHTML=botStats.totalDiscovered; document.getElementById('totalPublished').innerHTML=botStats.totalPublished; document.getElementById('totalFulfilled').innerHTML=botStats.totalFulfilled; document.getElementById('platformRevenue').innerHTML=`$${(botStats.platformRevenue/100).toFixed(2)}`; const botProds=products.filter(p=>p.botAdded).slice(0,15); document.getElementById('botProductsList').innerHTML=botProds.map(p=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #ccc;padding:8px;"><img src="${p.imageUrl}" width="50"><div><strong>${escapeHtml(p.title)}</strong><br>Profit ${p.marginPercent}%</div><div>$${(p.sellingPrice/100).toFixed(2)}</div><button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Remove</button></div>`).join(''); }
-    function clearAllBotProducts() { if(confirm('Remove all bot products?')){ products=products.filter(p=>!p.botAdded); saveData(); refreshMarketplace(); if(currentUser?.role==='admin') showAdminDashboard(); showToast('Cleared'); } }
-    function deleteProduct(id) { products=products.filter(p=>p.id!==id); saveData(); refreshMarketplace(); if(currentUser?.role==='affiliate') showAffiliateDashboard(); if(currentUser?.role==='admin') showAdminDashboard(); showToast('Deleted'); }
-    function showAffiliateDashboard() { if(!currentUser||currentUser.role!=='affiliate'){showToast('Login as affiliate');openLoginModal('affiliate');return;} document.getElementById('buyerView').style.display='none'; document.getElementById('affiliateView').style.display='block'; document.getElementById('adminView').style.display='none'; const myProducts=products.filter(p=>p.affiliateId===currentUser.id); const myOrders=orders.filter(o=>o.affiliateId===currentUser.id); const totalEarnings=myOrders.reduce((s,o)=>s+(o.profitCents-(o.fastFeeCents||0)),0); document.getElementById('affiliateStats').innerHTML=`<div class="stat-card">💰 $${(totalEarnings/100).toFixed(2)}</div><div class="stat-card">📦 ${myOrders.length}</div>`; document.getElementById('affiliateProductsList').innerHTML=myProducts.map(p=>`<div style="border:1px solid #ddd; margin:10px; padding:10px; border-radius:16px;"><img src="${p.imageUrl}" width="50"> ${escapeHtml(p.title)} - Profit $${((p.sellingPrice-p.basePrice)/100).toFixed(2)} <button onclick="deleteProduct('${p.id}')" class="btn btn-danger">Delete</button></div>`).join(''); document.getElementById('affiliateOrdersList').innerHTML=myOrders.map(o=>`<div>Sold ${products.find(p=>p.id===o.productId)?.title} - $${(o.soldPrice/100).toFixed(2)}</div>`).join(''); }
-    function showBuyerView() { document.getElementById('buyerView').style.display='block'; document.getElementById('affiliateView').style.display='none'; document.getElementById('adminView').style.display='none'; refreshMarketplace(); }
-    function openLoginModal(r) { document.getElementById('loginRoleSelect').value=r; document.getElementById('loginModal').style.display='flex'; }
-    function closeLoginModal() { document.getElementById('loginModal').style.display='none'; }
-    function closeCheckoutModal() { document.getElementById('checkoutModal').style.display='none'; }
-    function doLogin() { const email=document.getElementById('loginEmail').value; const role=document.getElementById('loginRoleSelect').value; if(!email){showToast('Enter email');return;} let user=Object.values(users).find(u=>u.email===email); if(!user){user={id:'user_'+Date.now(),email,role,subscription:role==='affiliate'?'free':null}; users[user.id]=user; saveData();} currentUser=user; closeLoginModal(); showToast(`Welcome ${role}`); if(role==='admin') showAdminDashboard(); else if(role==='affiliate') showAffiliateDashboard(); else showBuyerView(); updateHeader(); }
-    function openAdminLogin() { document.getElementById('adminLoginModal').style.display='flex'; }
-    function closeAdminLoginModal() { document.getElementById('adminLoginModal').style.display='none'; }
-    function verifyAdmin() { const pwd=document.getElementById('adminPassword').value; if(pwd==='Firste-commercesite'){ let admin=Object.values(users).find(u=>u.role==='admin'); if(!admin){admin={id:'admin_main',email:'admin@affily.market',role:'admin'}; users[admin.id]=admin; saveData();} currentUser=admin; closeAdminLoginModal(); showToast('Admin auth'); showAdminDashboard(); updateHeader(); }else{showToast('Wrong password');} }
-    function updateHeader() { const ua=document.getElementById('userArea'); if(currentUser){ ua.innerHTML=`<span>👋 ${currentUser.email.split('@')[0]}</span><button onclick="logout()" style="background:transparent; color:white;">Sign Out</button>`; } else { ua.innerHTML=`<button onclick="openLoginModal('buyer')">Sign In</button><button onclick="openLoginModal('affiliate')">Sell</button>`; } }
-    function logout() { currentUser=null; showBuyerView(); updateHeader(); showToast('Logged out'); }
-    function escapeHtml(str) { return String(str||'').replace(/[&<>]/g,function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; return '&gt;';}); }
-    function startAutoMode() { if(botInterval) clearInterval(botInterval); botInterval=setInterval(runBotDiscovery,24*60*60*1000); botAutoMode=true; localStorage.setItem('bot_auto_mode','true'); document.getElementById('autoModeBtn').innerHTML='⏸️ Disable Auto Mode'; showToast('Auto mode enabled'); }
-    function stopAutoMode() { if(botInterval) clearInterval(botInterval); botAutoMode=false; localStorage.setItem('bot_auto_mode','false'); document.getElementById('autoModeBtn').innerHTML='🤖 Enable Auto Mode (Daily)'; showToast('Auto mode disabled'); }
-    function toggleAutoMode() { botAutoMode?stopAutoMode():startAutoMode(); }
-    function closeModal(id) { document.getElementById(id).style.display='none'; }
     
-    // Customer Care Chat logic
-    const chatBtn = document.getElementById('customerCareBtn');
-    const chatModal = document.getElementById('chatModal');
-    const closeChat = document.getElementById('closeChatBtn');
-    const sendChat = document.getElementById('sendChatBtn');
-    const chatInput = document.getElementById('chatInput');
-    const chatMessages = document.getElementById('chatMessages');
+    function renderAffiliateDashboard() {
+        if (!currentUser || currentUser.role !== 'affiliate') return;
+        document.getElementById('buyerStoreView').style.display = 'none';
+        document.getElementById('productDetailView').style.display = 'none';
+        document.getElementById('affiliateDashboardView').style.display = 'block';
+        document.getElementById('adminPanelView').style.display = 'none';
+        showAffiliateTab('dash-home');
+        document.querySelectorAll('.dash-sidebar li[data-tab]').forEach(li => li.onclick = () => showAffiliateTab(li.dataset.tab));
+        document.getElementById('logoutAffiliateBtn').onclick = () => { currentUser = null; showBuyerView(); };
+    }
     
-    function addMessage(text, isUser) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${isUser ? 'user-msg' : 'bot-msg'}`;
-        msgDiv.innerText = text;
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+    window.deleteProduct = (id) => { products = products.filter(p=>p.id!==id); saveData(); renderAffiliateDashboard(); renderBuyerStore(); };
+    
+    // ==================== ADMIN PANEL ====================
+    function renderAdminPanel() {
+        document.getElementById('buyerStoreView').style.display = 'none';
+        document.getElementById('productDetailView').style.display = 'none';
+        document.getElementById('affiliateDashboardView').style.display = 'none';
+        document.getElementById('adminPanelView').style.display = 'block';
+        document.getElementById('adminStats').innerHTML = `Discovered: ${botStats.totalDiscovered} | Published: ${botStats.totalPublished} | Revenue: $${(botStats.platformRevenue/100).toFixed(2)}`;
+        const botProds = products.filter(p=>p.botAdded);
+        document.getElementById('adminBotList').innerHTML = botProds.map(p => `<div><img src="${p.imageUrl}" width="50"> ${p.title} - $${(p.sellingPrice/100).toFixed(2)}</div>`).join('');
+        document.getElementById('adminRunBotBtn').onclick = runBotDiscovery;
+        document.getElementById('adminToggleAutoBtn').onclick = toggleAutoMode;
+        document.getElementById('adminClearBotBtn').onclick = () => { products = products.filter(p=>!p.botAdded); saveData(); renderBuyerStore(); renderAdminPanel(); };
+        document.getElementById('adminLogoutBtn').onclick = () => { currentUser = null; showBuyerView(); };
     }
-    function botReply(userMsg) {
-        let reply = "Thank you for contacting affily Care. ";
-        if (userMsg.toLowerCase().includes('order')) reply += "You can track your order in your dashboard. Need help? Provide your order ID.";
-        else if (userMsg.toLowerCase().includes('refund')) reply += "Our refund policy allows returns within 30 days. Contact support@affily.market";
-        else if (userMsg.toLowerCase().includes('affiliate')) reply += "Great! You can become an affiliate seller by clicking 'Sell' and registering.";
-        else reply += "Our team will get back to you shortly. For urgent issues, email care@affily.market";
-        setTimeout(() => addMessage(reply, false), 500);
+    
+    function showBuyerView() {
+        document.getElementById('buyerStoreView').style.display = 'block';
+        document.getElementById('productDetailView').style.display = 'none';
+        document.getElementById('affiliateDashboardView').style.display = 'none';
+        document.getElementById('adminPanelView').style.display = 'none';
+        renderBuyerStore();
     }
-    chatBtn.onclick = () => { chatModal.style.display = 'flex'; };
-    closeChat.onclick = () => { chatModal.style.display = 'none'; };
-    sendChat.onclick = () => {
-        const msg = chatInput.value.trim();
-        if (!msg) return;
-        addMessage(msg, true);
-        chatInput.value = '';
-        botReply(msg);
+    
+    // ==================== AUTH ====================
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+    function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
+    function closeRegisterModal() { document.getElementById('registerModal').style.display = 'none'; }
+    document.getElementById('loginBtn').onclick = openLoginModal;
+    document.getElementById('registerBtn').onclick = openRegisterModal;
+    document.getElementById('closeLoginModal').onclick = closeLoginModal;
+    document.getElementById('closeRegModal').onclick = closeRegisterModal;
+    
+    document.getElementById('doLoginBtn').onclick = () => {
+        const id = document.getElementById('loginId').value;
+        const pass = document.getElementById('loginPass').value;
+        const role = document.getElementById('loginRole').value;
+        if (role === 'admin') {
+            if (id === 'admin14' && pass === 'first-ecommerce') {
+                currentUser = { id: 'admin', role: 'admin', name: 'Admin' };
+                closeLoginModal();
+                renderAdminPanel();
+                showToast('Admin logged in');
+            } else showToast('Invalid admin');
+            return;
+        }
+        const user = users.find(u => u.email === id && u.password === pass && u.role === role);
+        if (user) {
+            currentUser = user;
+            closeLoginModal();
+            if (role === 'affiliate') renderAffiliateDashboard();
+            else showBuyerView();
+            showToast(`Welcome ${user.name}`);
+        } else showToast('Invalid credentials');
     };
-    chatInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendChat.click(); });
+    document.getElementById('doRegisterBtn').onclick = () => {
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const pass = document.getElementById('regPass').value;
+        if (!name || !email || !pass) { showToast('All fields required'); return; }
+        if (users.find(u => u.email === email)) { showToast('Email exists'); return; }
+        users.push({ id: 'user_'+Date.now(), name, email, password: pass, role: 'affiliate' });
+        saveData();
+        showToast('Registered! Please login.');
+        closeRegisterModal();
+        openLoginModal();
+    };
     
-    // Initialize demo products if empty
-    if(products.length===0){
-        products.push({id:'demo1',affiliateId:'ai_bot',title:'Portable Blender',category:'Home',basePrice:1550,sellingPrice:3499,imageUrl:'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300',rating:4.8,status:'active',botAdded:true});
+    // Initialize demo data
+    if (products.length === 0) {
+        products.push({ id:'demo1', affiliateId:'ai_bot', title:'Wireless Headphones', category:'Electronics', basePrice:2000, sellingPrice:4999, imageUrl:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300', description:'High quality sound', rating:4.5, status:'active', botAdded:true });
+        products.push({ id:'demo2', affiliateId:'ai_bot', title:'Smart Watch', category:'Electronics', basePrice:3500, sellingPrice:7999, imageUrl:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300', description:'Track your fitness', rating:4.7, status:'active', botAdded:true });
         saveData();
     }
-    document.getElementById('developerChoiceLink')?.addEventListener('click',(e)=>{e.preventDefault(); const p=document.getElementById('devChoicePanel'); p.style.display=p.style.display==='none'?'block':'none';});
-    document.getElementById('adminLoginLink')?.addEventListener('click',(e)=>{e.preventDefault(); openAdminLogin();});
-    document.getElementById('privacyLink')?.addEventListener('click',(e)=>{e.preventDefault(); document.getElementById('privacyModal').style.display='flex';});
-    document.getElementById('disclaimerLink')?.addEventListener('click',(e)=>{e.preventDefault(); document.getElementById('disclaimerModal').style.display='flex';});
-    renderCategories(); refreshMarketplace(); updateHeader(); if(botAutoMode) startAutoMode();
-    window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display='none'; };
+    if (autoModeEnabled) startAutoMode();
+    showBuyerView();
 </script>
 </body>
 </html>
